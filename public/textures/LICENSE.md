@@ -1,0 +1,2 @@
+Earth textures come from [Solar System Scope](https://www.solarsystemscope.com/textures/),
+and are under a [Creative Commons Attribution 4.0 International license](https://creativecommons.org/licenses/by/4.0/).

@@ -1,0 +1,5 @@
+node_modules/
+built/
+*.blend1
+*.blend2
+.openode

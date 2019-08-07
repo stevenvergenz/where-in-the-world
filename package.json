@@ -1,0 +1,31 @@
+{
+  "name": "where-in-the-world",
+  "version": "1.0.0",
+  "description": "",
+  "main": "built/app.js",
+  "scripts": {
+    "build": "tsc --build",
+    "start": "node .",
+    "debug": "node --inspect-brk built/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/stevenvergenz/where-in-the-world.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/stevenvergenz/where-in-the-world/issues"
+  },
+  "homepage": "https://github.com/stevenvergenz/where-in-the-world#readme",
+  "dependencies": {
+    "@microsoft/mixed-reality-extension-sdk": "^0.12.1"
+  },
+  "devDependencies": {
+    "@types/node": "^10.12.18",
+    "@types/typescript": "^2.0.0",
+    "@types/restify": "^7.2.7",
+    "@types/ws": "^6.0.1",
+    "typescript": "^3.2.2"
+  }
+}
