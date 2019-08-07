@@ -36,9 +36,8 @@ export class WhereInTheWorld {
 			actor: { name: 'Root' }
 		});
 
-		const globeAssets = await this.assets.loadGltf(`${webhost.baseUrl}/earth.gltf`);
-		this.globe = MRE.Actor.CreateFromPrefab(this.context, {
-			prefabId: globeAssets.find(a => !!a.prefab).id,
+		this.globe = MRE.Actor.CreateFromGltf(this.context, {
+			resourceUrl: `${webhost.baseUrl}/earth.gltf`,
 			actor: { parentId: this.root.id }
 		});
 
@@ -56,9 +55,16 @@ export class WhereInTheWorld {
 	}
 
 	private async userJoined(user: MRE.User | FakeUser): Promise<void> {
-		const location = await this.ipToLocation(user.properties.remoteAddress);
-		const pin = new UserPin(this, user.name, location);
+		let location: Location;
+		try {
+			location = await this.ipToLocation(user.properties.remoteAddress);
+		}
+		catch(e) {
+			console.error(e);
+			return;
+		}
 
+		const pin = new UserPin(this, user.name, location);
 		this.userPins[user.id] = pin;
 		pin.pinToGlobe();
 	}

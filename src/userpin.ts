@@ -40,16 +40,20 @@ export class UserPin {
 		});
 		this.model.enableAnimation('ConeAction');
 
-		[this.label] = this.model.findChildrenByName('Label', true);
+		this.model.created().then(() => {
+			[this.label] = this.model.findChildrenByName('Label', true);
 
-		this.label.transform.local.rotation =
-			MRE.Quaternion.FromEulerAngles(-this.location.coordinates.latitude, Math.PI / 2, 0);
-		this.label.enableText({
-			contents: this.displayName,
-			anchor: MRE.TextAnchorLocation.MiddleCenter,
-			height: 0.1,
-			color: { r: 1, g: 0.76, b: 0.89 }
-		});
+			this.label.transform.local.rotation =
+				MRE.Quaternion.FromEulerAngles(-this.location.coordinates.latitude, Math.PI / 2, 0);
+
+			this.label.enableText({
+				contents: this.displayName,
+				anchor: MRE.TextAnchorLocation.MiddleCenter,
+				height: 0.1,
+				color: { r: 1, g: 0.76, b: 0.89 }
+			});
+		})
+		.catch(reason => console.log(reason));
 	}
 
 	public unpinFromGlobe(): void {
