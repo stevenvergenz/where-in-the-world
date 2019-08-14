@@ -3,6 +3,7 @@ WORKDIR /opt/mre
 
 COPY package*.json ./
 RUN ["npm", "install", "--unsafe-perm"]
+COPY adapter.js ./node_modules/@microsoft/mixed-reality-extension-sdk/built/adapters/multipeer/
 
 COPY tsconfig.json ./
 COPY src ./src/
