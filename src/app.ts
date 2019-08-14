@@ -77,7 +77,7 @@ export class WhereInTheWorld {
 
 	private async ipToLocation(ip: string): Promise<Location> {
 		const res = await fetchJSON(`http://api.ipapi.com/${ip}?access_key=${API_KEY}`);
-		console.log(res.latitude, res.longitude);
+		console.log('coordinates:', res.latitude, res.longitude, res);
 
 		// latitude +N, longitude +E, country_code
 		return new Location(
