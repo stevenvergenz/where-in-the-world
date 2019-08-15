@@ -54,7 +54,7 @@ export class WhereInTheWorld {
 		}
 	}
 
-	private async userJoined(user: MRE.User | FakeUser): Promise<void> {
+	private async userJoined(user: MRE.UserLike): Promise<void> {
 		let location: Location;
 		try {
 			location = await this.ipToLocation(user.properties.remoteAddress);
@@ -77,7 +77,6 @@ export class WhereInTheWorld {
 
 	private async ipToLocation(ip: string): Promise<Location> {
 		const res = await fetchJSON(`http://api.ipapi.com/${ip}?access_key=${API_KEY}`);
-		console.log('coordinates:', res.latitude, res.longitude, res);
 
 		// latitude +N, longitude +E, country_code
 		return new Location(
@@ -89,7 +88,7 @@ export class WhereInTheWorld {
 		);
 	}
 
-	private async test(): Promise<void> {
+	private test(): void {
 		this.userJoined(new FakeUser('Seattle', '216.243.34.181'));
 		this.userJoined(new FakeUser('Richmond', '208.253.114.165'));
 		this.userJoined(new FakeUser('Sydney', '121.200.30.147'));
