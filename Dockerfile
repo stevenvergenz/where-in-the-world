@@ -1,4 +1,4 @@
-FROM node:10.16-alpine
+FROM node:10.16
 WORKDIR /opt/mre
 
 RUN apt-get update && apt-get install git
