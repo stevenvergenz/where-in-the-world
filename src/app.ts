@@ -36,8 +36,8 @@ export class WhereInTheWorld {
 			actor: { name: 'Root' }
 		});
 
-		this.globe = MRE.Actor.CreateFromGltf(this.context, {
-			resourceUrl: `${webhost.baseUrl}/earth.gltf`,
+		this.globe = MRE.Actor.CreateFromGltf(new MRE.AssetContainer(this.context), {
+			uri: `${webhost.baseUrl}/earth.gltf`,
 			actor: { parentId: this.root.id }
 		});
 
