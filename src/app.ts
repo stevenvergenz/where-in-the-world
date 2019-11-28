@@ -1,12 +1,10 @@
 import * as MRE from '@microsoft/mixed-reality-extension-sdk';
 
 import { globeSpin } from './animations';
+import { ipToLocation } from './apiManager';
 import FakeUser from './fakeUser';
-import fetchJSON from './fetchJSON';
 import { webhost } from './server';
 import { UserPin, Location } from './userpin';
-
-const API_KEY = process.env['API_KEY'];
 
 /**
  * App
@@ -57,7 +55,7 @@ export class WhereInTheWorld {
 	private async userJoined(user: MRE.UserLike): Promise<void> {
 		let location: Location;
 		try {
-			location = await this.ipToLocation(user.properties.remoteAddress);
+			location = await ipToLocation(user.properties.remoteAddress);
 		}
 		catch(e) {
 			console.error(e);
@@ -73,19 +71,6 @@ export class WhereInTheWorld {
 		const pin = this.userPins[user.id];
 		pin.unpinFromGlobe();
 		delete this.userPins[user.id];
-	}
-
-	private async ipToLocation(ip: string): Promise<Location> {
-		const res = await fetchJSON(`http://api.ipapi.com/${ip}?access_key=${API_KEY}`);
-
-		// latitude +N, longitude +E, country_code
-		return new Location(
-			{
-				latitude: res.latitude * MRE.DegreesToRadians,
-				longitude: res.longitude * MRE.DegreesToRadians
-			},
-			res.country_code
-		);
 	}
 
 	private test(): void {
