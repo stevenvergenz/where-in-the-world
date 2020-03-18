@@ -1,6 +1,5 @@
 import { resolve as resolvePath } from 'path';
 import * as MRE from '@microsoft/mixed-reality-extension-sdk';
-import { log } from '@microsoft/mixed-reality-extension-sdk/built/log';
 
 import { WhereInTheWorld } from './app';
 

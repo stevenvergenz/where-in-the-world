@@ -19,14 +19,9 @@
   },
   "homepage": "https://github.com/stevenvergenz/where-in-the-world#readme",
   "dependencies": {
-    "@microsoft/mixed-reality-extension-altspacevr-extras": "^0.12.2",
-    "@microsoft/mixed-reality-extension-sdk": "^0.13.1"
+    "@microsoft/mixed-reality-extension-sdk": "^0.15.0"
   },
   "devDependencies": {
-    "@types/node": "^10.12.18",
-    "@types/typescript": "^2.0.0",
-    "@types/restify": "^7.2.7",
-    "@types/ws": "^6.0.1",
-    "typescript": "^3.2.2"
+    "typescript": "^3.8.3"
   }
 }

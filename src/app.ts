@@ -15,7 +15,7 @@ export class WhereInTheWorld {
 	public root: MRE.Actor = null;
 	public assets: MRE.AssetContainer;
 	public globe: MRE.Actor = null;
-	private userPins: { [id: string]: UserPin } = {};
+	private userPins = new Map<string, UserPin>();
 	public pinPrefab: MRE.Prefab;
 
 	constructor(public context: MRE.Context, params: MRE.ParameterSet) {
@@ -55,6 +55,12 @@ export class WhereInTheWorld {
 	}
 
 	private async userJoined(user: MRE.UserLike): Promise<void> {
+		if (user instanceof MRE.User) {
+			// ask for permission before looking them up
+			const res = await user.prompt("Share your real-world city with the room?");
+			if (!res.submitted) { return; }
+		}
+
 		let location: Location;
 		try {
 			location = await this.ipToLocation(user.properties.remoteAddress);
@@ -65,14 +71,16 @@ export class WhereInTheWorld {
 		}
 
 		const pin = new UserPin(this, user.name, location);
-		this.userPins[user.id] = pin;
+		this.userPins.set(user.id, pin);
 		pin.pinToGlobe();
 	}
 
 	private userLeft(user: MRE.User): void {
-		const pin = this.userPins[user.id];
-		pin.unpinFromGlobe();
-		delete this.userPins[user.id];
+		if (this.userPins.has(user.id)) {
+			const pin = this.userPins.get(user.id);
+			pin.unpinFromGlobe();
+			this.userPins.delete(user.id);
+		}
 	}
 
 	private async ipToLocation(ip: string): Promise<Location> {
