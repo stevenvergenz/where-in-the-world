@@ -1,0 +1,7 @@
+{
+    "name": "Where Are We",
+    "description": "Compare global locations with other people in a room",
+    "author": "Steven Vergenz",
+    "license": "GPL-3.0-or-later",
+    "optionalPermissions": ["user-tracking"]
+}

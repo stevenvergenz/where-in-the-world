@@ -38,7 +38,7 @@ export class UserPin {
 				}
 			}
 		});
-		this.model.enableAnimation('ConeAction');
+		this.model.targetingAnimationsByName.get('ConeAction').play();
 
 		this.model.created().then(() => {
 			[this.label] = this.model.findChildrenByName('Label', true);

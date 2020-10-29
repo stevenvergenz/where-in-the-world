@@ -15,7 +15,7 @@ export class WhereInTheWorld {
 	public root: MRE.Actor = null;
 	public assets: MRE.AssetContainer;
 	public globe: MRE.Actor = null;
-	private userPins = new Map<string, UserPin>();
+	private userPins = new Map<MRE.Guid, UserPin>();
 	public pinPrefab: MRE.Prefab;
 
 	constructor(public context: MRE.Context, params: MRE.ParameterSet) {
@@ -32,20 +32,17 @@ export class WhereInTheWorld {
 	}
 
 	private async started(): Promise<void> {
-		this.root = MRE.Actor.CreateEmpty(this.context, {
+		this.root = MRE.Actor.Create(this.context, {
 			actor: { name: 'Root' }
 		});
 
-		this.globe = MRE.Actor.CreateFromGltf(new MRE.AssetContainer(this.context), {
+		this.globe = MRE.Actor.CreateFromGltf(this.assets, {
 			uri: `${webhost.baseUrl}/earth.gltf`,
 			actor: { parentId: this.root.id }
 		});
 
-		this.root.createAnimation('spin', {
-			keyframes: globeSpin,
-			wrapMode: MRE.AnimationWrapMode.Loop
-		});
-		this.root.enableAnimation('spin');
+		const spinData = this.assets.createAnimationData("spin", globeSpin);
+		spinData.bind({ globe: this.root }, { isPlaying: true, wrapMode: MRE.AnimationWrapMode.Loop });
 
 		const pinAssets = await this.assets.loadGltf(`${webhost.baseUrl}/pin.glb`);
 		this.pinPrefab = pinAssets.find(a => !!a.prefab).prefab;
