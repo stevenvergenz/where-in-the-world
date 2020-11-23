@@ -7,9 +7,9 @@ datasource db {
   url      = "file:./geoipcache.db"
 }
 
-model cache {
+model ipgeocache {
   id           Int     @id @default(autoincrement())
-  ip           String
+  ip           String  @unique
   latitude     Float
   longitude    Float
   country_code String?
