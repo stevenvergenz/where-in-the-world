@@ -38,9 +38,11 @@ export class UserPin {
 				}
 			}
 		});
-		this.model.targetingAnimationsByName.get('ConeAction').play();
+		
 
 		this.model.created().then(() => {
+			this.model.targetingAnimationsByName.get('ConeAction').play();
+			
 			[this.label] = this.model.findChildrenByName('Label', true);
 
 			this.label.transform.local.rotation =
