@@ -1,11 +1,17 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-}
-
 generator client {
   provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./geoipcache.db"
+}
+
+model cache {
+  id           Int     @id @default(autoincrement())
+  ip           String
+  latitude     Float
+  longitude    Float
+  country_code String?
+  last_updated Int
 }
