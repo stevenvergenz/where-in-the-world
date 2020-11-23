@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "sqlite"
-  url      = "file:./geoipcache.db"
+  url      = "file:./geoipcache.db?socket_timeout=10&connection_limit=1"
 }
 
 model ipgeocache {
