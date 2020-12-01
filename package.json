@@ -19,9 +19,11 @@
   },
   "homepage": "https://github.com/stevenvergenz/where-in-the-world#readme",
   "dependencies": {
-    "@microsoft/mixed-reality-extension-sdk": "^0.20.0"
+    "@microsoft/mixed-reality-extension-sdk": "^0.20.0",
+    "@prisma/client": "^2.11.0"
   },
   "devDependencies": {
+    "@prisma/cli": "^2.11.0",
     "typescript": "^3.8.3"
   }
 }
