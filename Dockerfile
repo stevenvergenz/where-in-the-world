@@ -9,6 +9,7 @@ COPY src ./src/
 RUN ["npm", "run", "build"]
 
 COPY public ./public/
+COPY prisma ./prisma/
 
 EXPOSE 3901/tcp
 CMD ["npm", "start"]
