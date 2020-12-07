@@ -5,17 +5,8 @@ import FakeUser from './fakeUser';
 import fetchJSON from './fetchJSON';
 import { webhost } from './server';
 import { UserPin, Location } from './userpin';
-import { PrismaClient } from "@prisma/client";
 
 const API_KEY = process.env['API_KEY'];
-
-// cache in miliseconds
-const MAX_CACHE_TIME = process.env['MAX_CACHE_TIME'] || 7 * 24 * 60 * 60 * 1000;
-// Load the sqlite db client
-const prismaClient = new PrismaClient({
-  //log: ['query', 'info', 'warn'],
-});
-
 
 /**
  * App
@@ -69,14 +60,12 @@ export class WhereInTheWorld {
 
 		let location: Location;
 		try {
-			location = await this.ipToLocationCache(user.properties.remoteAddress);
+			location = await this.ipToLocation(user.properties.remoteAddress);
 		}
 		catch(e) {
 			console.error(e);
 			return;
 		}
-
-		console.log("location", location)
 
 		const pin = new UserPin(this, user.name, location);
 		this.userPins.set(user.id, pin);
@@ -91,66 +80,8 @@ export class WhereInTheWorld {
 		}
 	}
 
-	private async ipToLocationCache(ip: string): Promise<Location> {
-
-		const lookupip: any = await prismaClient.ipgeocache.findOne({
-			where: {
-				ip: ip
-			}
-		});
-
-		if(lookupip) {
-			// found result
-			if(new Date().getTime() - lookupip.last_updated <= MAX_CACHE_TIME) {
-				// within max cachetime -> return cached result.
-				return new Location(
-					{
-						latitude: lookupip.latitude * MRE.DegreesToRadians,
-						longitude: lookupip.longitude * MRE.DegreesToRadians
-					},
-					lookupip.country_code
-				);
-			} else {
-				// data too old: pull in fresh data.
-				return await this.ipToLocation(ip);
-			}
-		} else {
-			// not found: pull in fresh data.
-			return await this.ipToLocation(ip);
-		}
-	}
-
-	private async cacheIP(geoipdata: any) {
-		// last_updated
-		const unixts = new Date().getTime();
-		// insert in db.
-		return await prismaClient.ipgeocache.upsert({
-			create: {
-				ip: geoipdata.ip,
-				latitude: geoipdata.latitude,
-				longitude: geoipdata.longitude,
-				country_code: geoipdata.country_code,
-				last_updated: unixts
-			},
-			update: {
-				latitude: geoipdata.latitude,
-				longitude: geoipdata.longitude,
-				country_code: geoipdata.country_code,
-				last_updated: unixts
-			},
-			where: {
-				ip: geoipdata.ip,
-			},
-		});
-	}
-
 	private async ipToLocation(ip: string): Promise<Location> {
 		const res = await fetchJSON(`http://api.ipapi.com/${ip}?access_key=${API_KEY}`);
-
-		// store new result in DB if there is a result.
-		if(res.ip && res.latitude && res.longitude){
-			this.cacheIP(res);
-		}
 
 		// latitude +N, longitude +E, country_code
 		return new Location(
