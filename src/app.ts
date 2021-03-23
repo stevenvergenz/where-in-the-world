@@ -15,6 +15,7 @@ export class WhereInTheWorld {
 	public root: MRE.Actor = null;
 	public assets: MRE.AssetContainer;
 	public globe: MRE.Actor = null;
+	public donationLink: MRE.Actor = null;
 	private userPins = new Map<MRE.Guid, UserPin>();
 	public pinPrefab: MRE.Prefab;
 
@@ -41,6 +42,18 @@ export class WhereInTheWorld {
 			actor: { parentId: this.root.id }
 		});
 
+		this.donationLink = MRE.Actor.Create(this.context, { actor: {
+			name: 'DonationLink',
+			transform: { local: { position: { y: 1 }}},
+			text: {
+				contents: 'Help keep this world turning!\nhttps://liberapay.com/steven_avr/donate',
+				height: 0.05,
+				anchor: MRE.TextAnchorLocation.BottomCenter,
+				justify: MRE.TextJustify.Center,
+				color: { r: 184/255, g: 198/255, b: 255/255 } // pale blue
+			}
+		}})
+
 		const spinData = this.assets.createAnimationData("spin", globeSpin);
 		spinData.bind({ globe: this.root }, { isPlaying: true, wrapMode: MRE.AnimationWrapMode.Loop });
 
@@ -64,6 +77,8 @@ export class WhereInTheWorld {
 		}
 		catch(e) {
 			console.error(e);
+			this.donationLink.text.contents = 'This app is maxed out. Donate to keep it going!\nhttps://liberapay.com/steven_avr/donate';
+			this.donationLink.text.height = 0.07;
 			return;
 		}
 
@@ -84,13 +99,17 @@ export class WhereInTheWorld {
 		const res = await fetchJSON(`http://api.ipapi.com/${ip}?access_key=${API_KEY}`);
 
 		// latitude +N, longitude +E, country_code
-		return new Location(
-			{
-				latitude: res.latitude * MRE.DegreesToRadians,
-				longitude: res.longitude * MRE.DegreesToRadians
-			},
-			res.country_code
-		);
+		if (res.success) {
+			return new Location(
+				{
+					latitude: res.latitude * MRE.DegreesToRadians,
+					longitude: res.longitude * MRE.DegreesToRadians
+				},
+				res.country_code
+			);
+		} else {
+			throw new Error(res.error?.info);
+		}
 	}
 
 	private test(): void {

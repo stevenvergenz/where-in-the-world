@@ -59,6 +59,6 @@ export class UserPin {
 	}
 
 	public unpinFromGlobe(): void {
-		this.model.destroy();
+		this.model?.destroy();
 	}
 }
