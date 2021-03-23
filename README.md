@@ -3,6 +3,10 @@ Where Are We
 
 Compare global locations with other people in a room.
 
+A hosted version of this MRE is available at `wss://mres.altvr.com/wherearewe/`.
+
+Please donate to help me offset the hosting costs: https://liberapay.com/steven_avr/donate
+
 License
 --------
 
