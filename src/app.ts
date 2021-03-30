@@ -98,8 +98,9 @@ export class WhereInTheWorld {
 	private async ipToLocation(ip: string): Promise<Location> {
 		const res = await fetchJSON(`http://api.ipapi.com/${ip}?access_key=${API_KEY}`);
 
-		// latitude +N, longitude +E, country_code
-		if (res.success) {
+		// weirdly, success is undefined on successful payloads, and false on failed ones
+		if (res.success !== false) {
+			// latitude +N, longitude +E, country_code
 			return new Location(
 				{
 					latitude: res.latitude * MRE.DegreesToRadians,
