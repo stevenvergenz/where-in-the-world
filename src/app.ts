@@ -46,7 +46,7 @@ export class WhereInTheWorld {
 			name: 'DonationLink',
 			transform: { local: { position: { y: 1 }}},
 			text: {
-				contents: 'Featured Donor: VR Language Exchange\nhttps://liberapay.com/steven_avr/donate',
+				contents: 'Help keep this world turning!\nhttps://liberapay.com/steven_avr/donate',
 				height: 0.05,
 				anchor: MRE.TextAnchorLocation.BottomCenter,
 				justify: MRE.TextJustify.Center,
